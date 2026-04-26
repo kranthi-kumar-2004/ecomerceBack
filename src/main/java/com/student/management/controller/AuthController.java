@@ -32,7 +32,7 @@ public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
     User user = new User();
 
     user.setName(request.getName()); // ✅ ADD THIS
-    user.setUsername(request.getUsername());
+    user.setUsername(request.getEmail());
     user.setPassword(passwordEncoder.encode(request.getPassword()));
 
     userRepository.save(user);
@@ -43,7 +43,7 @@ public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request) {
 
-        User user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository.findByUsername(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
