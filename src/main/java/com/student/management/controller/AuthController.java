@@ -26,13 +26,13 @@ public class AuthController {
 public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
 
     if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-        return ResponseEntity.status(409).body("Username already exists");
+        return ResponseEntity.status(409).body("email already exists");
     }
 
     User user = new User();
 
     user.setName(request.getName()); // ✅ ADD THIS
-    user.setUsername(request.getEmail());
+    user.setemail(request.getEmail());
     user.setPassword(passwordEncoder.encode(request.getPassword()));
 
     userRepository.save(user);
