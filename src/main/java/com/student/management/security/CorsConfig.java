@@ -18,6 +18,7 @@ public class CorsConfig {
                         .allowedOriginPatterns("https://ecomerce-front-phi.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
+                        .exposedHeaders("Authorization") 
                         .allowCredentials(true)
                         .maxAge(3600);
             }
