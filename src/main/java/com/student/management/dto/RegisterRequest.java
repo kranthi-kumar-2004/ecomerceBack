@@ -3,7 +3,7 @@ package com.student.management.dto;
 public class RegisterRequest {
 
     private String name;      // ✅ added
-    private String username;  // email will come here
+    private String email;  // email will come here
     private String password;
 
     // ===== GETTERS =====
@@ -11,8 +11,8 @@ public class RegisterRequest {
         return name;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
@@ -24,8 +24,8 @@ public class RegisterRequest {
         this.name = name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String username) {
+        this.email = username;
     }
 
     public void setPassword(String password) {
