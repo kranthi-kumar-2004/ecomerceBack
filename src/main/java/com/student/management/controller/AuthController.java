@@ -23,20 +23,22 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
 
-        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            return ResponseEntity.status(409).body("Username already exists");
-        }
-
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        userRepository.save(user);
-
-        return ResponseEntity.ok("User registered successfully");
+    if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+        return ResponseEntity.status(409).body("Username already exists");
     }
+
+    User user = new User();
+
+    user.setName(request.getName()); // ✅ ADD THIS
+    user.setUsername(request.getUsername());
+    user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+    userRepository.save(user);
+
+    return ResponseEntity.ok("User registered successfully");
+}
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request) {
