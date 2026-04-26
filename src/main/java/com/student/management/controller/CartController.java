@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.student.management.Repository.CartRepository;
 import com.student.management.dto.CartRequest;
 import com.student.management.security.JwtUtil;
 import com.student.management.services.CartService;
@@ -11,7 +12,6 @@ import com.student.management.enitity.Cart;
 
 import java.util.List;
 import java.util.Map;
-
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
@@ -19,12 +19,23 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private CartRepository repo;
+
+    // 🔥 common method
+    private Long getUserId(String token) {
+        return JwtUtil.extractUserId(token.replace("Bearer ", ""));
+    }
+
+    // ========================
+    // GET CART
+    // ========================
     @GetMapping
     public ResponseEntity<?> getCartItems(
             @RequestHeader("Authorization") String authHeader
     ) {
         try {
-            Long userId = JwtUtil.extractUserId(authHeader);
+            Long userId = getUserId(authHeader);
 
             List<Cart> items = cartService.getCartItems(userId);
 
@@ -37,13 +48,26 @@ public class CartController {
         }
     }
 
+    @DeleteMapping("/clear")
+    public ResponseEntity<?> clearCart(
+            @RequestHeader("Authorization") String token
+    ) {
+
+        Long userId = getUserId(token);
+
+        repo.deleteCartByUserId(userId); 
+
+
+        return ResponseEntity.ok("Cart cleared");
+    }
+
     @PostMapping
     public ResponseEntity<?> updateCart(
             @RequestHeader("Authorization") String authHeader,
             @RequestBody CartRequest request
     ) {
         try {
-            Long userId = JwtUtil.extractUserId(authHeader);
+            Long userId = getUserId(authHeader);
 
             int qty = cartService.updateCart(
                     userId,
@@ -63,15 +87,17 @@ public class CartController {
         }
     }
 
+    // ========================
+    // DELETE SINGLE ITEM
+    // ========================
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> deleteItem(
             @RequestHeader("Authorization") String authHeader,
             @PathVariable Long productId
     ) {
         try {
-            Long userId = JwtUtil.extractUserId(authHeader);
+            Long userId = getUserId(authHeader);
 
-            // quantity = 0 → delete
             cartService.updateCart(userId, productId, 0);
 
             return ResponseEntity.ok(Map.of("message", "Deleted ✅"));
