@@ -12,7 +12,7 @@ public class User {
 
     // 🔥 use email as username
     @Column(unique = true, nullable = false)
-    private String username;
+    private String email;
 
     @Column(nullable = false)
     private String password;
@@ -28,7 +28,7 @@ public class User {
     // ✅ UPDATED CONSTRUCTOR
     public User(String name, String username, String password) {
         this.name = name;
-        this.username = username;
+        this.email = username;
         this.password = password;
     }
 
@@ -42,8 +42,8 @@ public class User {
         return name;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
@@ -62,8 +62,8 @@ public class User {
         this.name = name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = username;
     }
 
     public void setPassword(String password) {
