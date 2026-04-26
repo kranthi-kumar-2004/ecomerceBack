@@ -32,7 +32,7 @@ public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
     User user = new User();
 
     user.setName(request.getName()); // ✅ ADD THIS
-    user.setemail(request.getEmail());
+    user.setEmail(request.getEmail());
     user.setPassword(passwordEncoder.encode(request.getPassword()));
 
     userRepository.save(user);
