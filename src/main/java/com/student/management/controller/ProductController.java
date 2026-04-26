@@ -35,7 +35,11 @@ private ProductService service;
 public Products add(@RequestBody Products p) {
     return service.save(p);
 }
-
+@GetMapping("/products/search")
+public List<Products> search(@RequestParam String name) {
+    return repo.findByNameContainingIgnoreCase(name);
+    
+}
 // UPDATE PRODUCT
 @PutMapping("/products/{id}")
 public Products update(@PathVariable Long id, @RequestBody Products p) {
