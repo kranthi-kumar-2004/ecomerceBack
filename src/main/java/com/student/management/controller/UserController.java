@@ -34,7 +34,7 @@ public class UserController {
             // ✅ Return only required fields (no password!)
             ProfileResponse response = new ProfileResponse(
                     user.getName(),
-                    user.getUsername()
+                    user.getEmail()
             );
 
             return ResponseEntity.ok(response);
