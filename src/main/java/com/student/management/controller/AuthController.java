@@ -41,17 +41,22 @@ public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
 }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
+public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    String email = request.getEmail().toLowerCase().trim();
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
+    User user = userRepository.findByEmail(email).orElse(null);
 
-        String token = JwtUtil.generateToken(user.getId());
-
-        return new LoginResponse(token);
+    if (user == null) {
+        return ResponseEntity.status(404).body("User not found");
     }
+
+    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        return ResponseEntity.status(401).body("Invalid password");
+    }
+
+    String token = JwtUtil.generateToken(user.getId());
+
+    return ResponseEntity.ok(new LoginResponse(token));
+}
 }
