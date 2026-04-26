@@ -10,9 +10,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 🔥 use email as username
     @Column(unique = true, nullable = false)
-    private String email;
+    private String email;   // ✅ MAIN FIELD
 
     @Column(nullable = false)
     private String password;
@@ -22,28 +21,26 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    // ✅ DEFAULT CONSTRUCTOR
     public User() {}
 
-    // ✅ UPDATED CONSTRUCTOR
-    public User(String name, String username, String password) {
+    public User(String name, String email, String password) {
         this.name = name;
-        this.email = username;
+        this.email = email;
         this.password = password;
     }
 
-    // ===== GETTERS & SETTERS =====
+    // ✅ GETTERS & SETTERS
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getEmail() {
         return email;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getPassword() {
@@ -58,12 +55,12 @@ public class User {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setEmail(String email) {
-        this.email = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPassword(String password) {
