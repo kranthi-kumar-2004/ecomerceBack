@@ -43,7 +43,7 @@ public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request) {
 
-        User user = userRepository.findByUsername(request.getEmail())
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
